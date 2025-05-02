@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tictactoe import player, actions, result, winner, terminal, utility, minimax
 
+
 class TicTacToeGUI:
     def __init__(self, root):
         self.root = root
