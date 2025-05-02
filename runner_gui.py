@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 from tictactoe import player, actions, result, winner, terminal, utility, minimax
 
 
@@ -9,7 +9,9 @@ class TicTacToeGUI:
         self.root.title("Tic-Tac-Toe")
         self.board = [[None, None, None], [None, None, None], [None, None, None]]
         self.buttons = [[None for _ in range(3)] for _ in range(3)]
-        self.create_board()
+        self.loader_label = tk.Label(self.root, text="", font=("Arial", 16))
+        self.loader_label.grid(row=3, column=0, columnspan=3)
+        self.create_board()  # Create the board
 
     def create_board(self):
         # Create a 3x3 grid of buttons
@@ -38,14 +40,23 @@ class TicTacToeGUI:
                 self.ai_move()
 
     def ai_move(self):
-        # AI makes a move using the Minimax algorithm
+        # Show "Thinking..." message
+        self.loader_label.config(text="Thinking...")
+        self.root.update()  # Force update the GUI to show the message
+
+        # AI makes a move using the full minimax algorithm
         move = minimax(self.board)
+
         if move:
             i, j = move
             self.board[i][j] = 'X'
             self.buttons[i][j].config(text='X')
             if terminal(self.board):
                 self.end_game()
+
+        # Clear the "Thinking..." message
+        self.loader_label.config(text="")
+        self.root.update()  # Force update the GUI to clear the message
 
     def end_game(self):
         # Display the result of the game
@@ -64,6 +75,10 @@ class TicTacToeGUI:
         for i in range(3):
             for j in range(3):
                 self.buttons[i][j].config(text="")
+
+    def create_menu(self):
+        # No menu needed since there's only one mode
+        pass
 
 if __name__ == "__main__":
     root = tk.Tk()

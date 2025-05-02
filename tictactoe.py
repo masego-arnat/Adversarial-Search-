@@ -52,43 +52,42 @@ def minimax(board):
     if terminal(board):
         return None
 
-    current_player = player(board)
-    if current_player == 'X':
-        best_value = -float('inf')
+    if player(board) == 'X':  # AI is maximizing
+        value = -float('inf')
         best_move = None
         for action in actions(board):
             new_board = result(board, action)
-            value = min_value(new_board)
-            if value > best_value:
-                best_value = value
+            new_value = min_value(new_board)
+            if new_value > value:
+                value = new_value
                 best_move = action
         return best_move
-    else:
-        best_value = float('inf')
+    else:  # Human is minimizing
+        value = float('inf')
         best_move = None
         for action in actions(board):
             new_board = result(board, action)
-            value = max_value(new_board)
-            if value < best_value:
-                best_value = value
+            new_value = max_value(new_board)
+            if new_value < value:
+                value = new_value
                 best_move = action
         return best_move
 
 def max_value(board):
     if terminal(board):
         return utility(board)
-    v = -float('inf')
+    value = -float('inf')
     for action in actions(board):
-        v = max(v, min_value(result(board, action)))
-    return v
+        value = max(value, min_value(result(board, action)))
+    return value
 
 def min_value(board):
     if terminal(board):
         return utility(board)
-    v = float('inf')
+    value = float('inf')
     for action in actions(board):
-        v = min(v, max_value(result(board, action)))
-    return v
+        value = min(value, max_value(result(board, action)))
+    return value
 
 # Example usage:
 # board = [[None, None, None], [None, None, None], [None, None, None]]
